@@ -1,25 +1,25 @@
 {
-  "name": "waiting-caribou",
-  "version": "2018.12.20",
-  "description": "Travis's Advent of Code 2018",
+  "name": "ubiquitous-swoop",
+  "version": "2019.12.01",
+  "description": "Travis's Advent of Code 2019",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.17.1",
     "connect-timeout": "^1.9.0"
   },
   "engines": {
     "node": "8.x"
   },
   "repository": {
-    "url": "https://glitch.com/edit/#!/waiting-caribou"
+    "url": "https://glitch.com/edit/#!/ubiquitous-swoop"
   },
   "license": "MIT",
   "keywords": [
     "adventofcode",
     "aoc",
-    "2018"
+    "2019"
   ]
 }
