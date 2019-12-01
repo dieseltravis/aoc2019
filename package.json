@@ -1,0 +1,25 @@
+{
+  "name": "waiting-caribou",
+  "version": "2018.12.20",
+  "description": "Travis's Advent of Code 2018",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "connect-timeout": "^1.9.0"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/waiting-caribou"
+  },
+  "license": "MIT",
+  "keywords": [
+    "adventofcode",
+    "aoc",
+    "2018"
+  ]
+}
