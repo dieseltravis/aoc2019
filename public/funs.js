@@ -5,11 +5,24 @@
   const all = {
     "day1":  {
       "part1": data => {
-        return data.trim().split('\n').map(Number).reduce((t, n) => t + n, 0);
+        return data.trim().split('\n').map(Number).reduce((t, mass) => {
+          var fuel = Math.floor(mass / 3) - 2;
+          return t + fuel;
+        }, 0);
       },
       "part2": data => {
-
-        return 0;
+        return data.trim().split('\n').map(Number).reduce((t, mass) => {
+          var fuel = 0
+          var lastmass = mass;
+          
+          while (lastmass > 0) {
+            lastmass = Math.floor(lastmass / 3) - 2;
+            if (lastmass > 0) {
+              fuel += lastmass;
+            }
+          }
+          return t + fuel;
+        }, 0);
       }
     },
     "day2": {
