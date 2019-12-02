@@ -27,6 +27,27 @@
     },
     "day2": {
       "part1": data => {
+        var commands = data.trim().split(',').map(Number);
+        commands[1] = 12;
+        commands[2] = 2;
+        for (let i = 0, l = commands.length; i < l; i++) {
+          if (commands[i] == 99) break;
+          
+          let op = commands[i]; // 1 add or 2 multiply
+          i++;
+          let posA = commands[i];
+          let numA = commands[posA];
+          i++;
+          let posB = commands[i];
+          let numB = commands[posB];
+          i++;
+          let posResult = commands[i];
+          
+          let result = op == 1 ? numA + numB : numA * numB;
+          commands[posResult] = result;
+        }
+        
+        return commands[0];
       },
       "part2": data => {
       }
