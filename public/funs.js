@@ -50,6 +50,41 @@
         return commands[0];
       },
       "part2": data => {
+        const end = 19690720;
+        const inputData = data.trim().split(',').map(Number);
+        const dataLength = inputData.length;
+        
+        for (let noun = 0; noun <= 99; noun++) {
+          for (let verb = 0; verb <= 99; verb++) {
+            let commands = inputData.slice();
+            commands[1] = noun;
+            commands[2] = verb;
+            
+            for (let i = 0; i < dataLength; i++) {
+              if (commands[i] === 99) break;
+
+              let op = commands[i]; // 1 add or 2 multiply
+              i++;
+              let posA = commands[i];
+              let numA = commands[posA];
+              i++;
+              let posB = commands[i];
+              let numB = commands[posB];
+              i++;
+              let posResult = commands[i];
+
+              let result = op === 1 ? numA + numB : numA * numB;
+              commands[posResult] = result;
+            }
+
+            //console.log(commands[0]);
+            if (commands[0] === end) {
+              return (noun * 100) + verb;
+            }
+          }
+        }
+        
+        return "error";
       }
     },
     "day3": {
