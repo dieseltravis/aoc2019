@@ -123,7 +123,6 @@
           let p = o.slice();
           for (let ii = 0, ll = dirs[i].length; ii < ll; ii++) {
             let val = dirs[i][ii];
-            //console.log(val, p.slice());
             if (val.dir === "U") {
               p[1] += val.amt;
             } else if (val.dir === "D") {
@@ -133,23 +132,16 @@
             } else if (val.dir === "R") {
               p[0] += val.amt;
             }
-            //console.log("pdiff", p.slice());
 
             // it's not the points, it's the lines between
-            //console.log(p[0] - previous[0], p[1] - previous[1]);
             let dx = p[0] - previous[0];
             let dy = p[1] - previous[1];
             do {
               do {
                 // set current point
                 let point = [p[0] - dx, p[1] - dy];
-                //console.log(dx, dy, point);
                 if (point[0] == previous[0] && point[1] == previous[1]) {
                   // skip previous point
-                  
-                //} else if (point[0] == p[0] && point[1] == p[1]) {
-                  // skip current point?
-                  
                 } else {
                   let key = wire + "," + point[0] + "," + point[1];
                   if (path[key]) {
@@ -181,11 +173,6 @@
         }
 
         console.log(intersects);
-        // input
-/*
-R8,U5,L5,D3
-U7,R6,D4,L4
-*/
 
         let lowest = Infinity;
         for (let i = 0, l = intersects.length; i < l; i++) {
@@ -196,7 +183,97 @@ U7,R6,D4,L4
 
         return lowest;
       },
-      part2: data => {}
+      part2: data => {
+        var dirs = data
+          .trim()
+          .split("\n")
+          .map(csv =>
+            csv.split(",").map(cmd => {
+              let val = {};
+              val.dir = cmd[0];
+              val.amt = Number(cmd.slice(1));
+              return val;
+            })
+          );
+        const o = [0, 0]; // x, y
+        let path = {};
+        let intersects = [];
+        let wire = 0;
+
+        for (let i = 0, l = dirs.length; i < l; i++) {
+          let previous = o.slice();
+          let p = o.slice();
+          let travelled = -1;
+          for (let ii = 0, ll = dirs[i].length; ii < ll; ii++) {
+            let val = dirs[i][ii];
+            if (val.dir === "U") {
+              p[1] += val.amt;
+            } else if (val.dir === "D") {
+              p[1] -= val.amt;
+            } else if (val.dir === "L") {
+              p[0] -= val.amt;
+            } else if (val.dir === "R") {
+              p[0] += val.amt;
+            }
+
+            // it's not the points, it's the lines between
+            let dx = p[0] - previous[0];
+            let dy = p[1] - previous[1];
+            do {
+              do {
+                // set current point
+                let point = [p[0] - dx, p[1] - dy];
+                travelled++;
+                if (point[0] == previous[0] && point[1] == previous[1]) {
+                  // skip previous point
+                } else {
+                  let key = wire + "," + point[0] + "," + point[1];
+                  if (path[key]) {
+                    path[key].i += 1;
+                    path[key].shortdistance = Math.min(path[key].shortdistance, travelled);
+                  } else {
+                    path[key] = {
+                      x: point[0],
+                      y: point[1],
+                      i: 1,
+                      shortdistance: travelled
+                    };
+                  }
+                  
+                  // when on the second wire, look for points in the first
+                  if (wire === 1 && path["0," + point[0] + "," + point[1]]) {
+                    let d0 = path["0," + point[0] + "," + point[1]].shortdistance;
+                    let d1 = path["1," + point[0] + "," + point[1]].shortdistance;
+                    intersects.push({
+                      x: point[0],
+                      y: point[1],
+                      d0: d0,
+                      d1: d1,
+                      sum: d0 + d1
+                    });
+                  }
+                }
+                dy === 0 ? 0 : dy < 0 ? dy++ : dy--;
+              } while ( dy != 0)
+              dx === 0 ? 0 : dx < 0 ? dx++ : dx--;
+            } while (dx != 0)
+
+            previous = p.slice();
+          }
+          wire++;
+        }
+
+        console.log(intersects);
+
+        let lowest = Infinity;
+        for (let i = 0, l = intersects.length; i < l; i++) {
+          let x = intersects[i];
+          let distance = x.sum;
+          lowest = Math.min(lowest, distance);
+        }
+
+        return lowest;
+      }
     },
     day4: {
       part1: data => {},
