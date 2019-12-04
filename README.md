@@ -10,6 +10,7 @@ solutions:
 1. [day one](https://ubiquitous-swoop.glitch.me/day01)
 2. [day two](https://ubiquitous-swoop.glitch.me/day02)
 3. [day three](https://ubiquitous-swoop.glitch.me/day03)
+4. [day four](https://ubiquitous-swoop.glitch.me/day04)
 
 2018
 ----

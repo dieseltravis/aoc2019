@@ -276,8 +276,39 @@
       }
     },
     day4: {
-      part1: data => {},
-      part2: data => {}
+      part1: data => {
+        const range = data
+          .trim()
+          .split("-")
+          .map(Number);
+        const len = 6;
+        
+        const validate = function (input) {
+          let isDouble = false;
+          let isIncreasing = true;
+          
+          for (let l = len - 1; l--;) {
+            if (!isDouble && input[l] === input[l + 1]) {
+              isDouble = true;
+            }
+            isIncreasing = isIncreasing && (input[l] <= input[l + 1]);
+          }
+          
+          return isDouble && isIncreasing;
+        };
+        
+        let count = 0;
+        for (let i = range[0]; i <= range[1]; i++) {
+          if (validate(Array.from(String(i), Number))) {
+            count++;
+          }
+        }
+        
+        return count;
+      },
+      part2: data => {
+        
+      }
     },
     day5: {
       part1: data => {},
