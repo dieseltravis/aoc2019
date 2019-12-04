@@ -307,7 +307,34 @@
         return count;
       },
       part2: data => {
+        const range = data
+          .trim()
+          .split("-")
+          .map(Number);
+        const len = 6;
+        const rx = /(0+|1+|2+|3+|4+|5+|6+|7+|8+|9+)/g;
         
+        const validate = function (inputString) {
+          let input = Array.from(inputString, Number);
+          let isDouble = inputString.match(rx).some((m) => m.length === 2);
+          let isIncreasing = true;
+          
+          for (let l = len - 1; l--;) {
+            isIncreasing = isIncreasing && (input[l] <= input[l + 1]);
+          }
+          
+          return isDouble && isIncreasing;
+        };
+        
+        let count = 0;
+        for (let i = range[0]; i <= range[1]; i++) {
+          if (validate(String(i))) {
+            count++;
+          }
+        }
+        
+        // not 984
+        return count;
       }
     },
     day5: {
