@@ -162,10 +162,22 @@
                     });
                   }
                 }
-                dy === 0 ? 0 : dy < 0 ? dy++ : dy--;
-              } while ( dy != 0)
-              dx === 0 ? 0 : dx < 0 ? dx++ : dx--;
-            } while (dx != 0)
+                if (dy !== 0) {
+                  if (dy < 0) {
+                    dy++;
+                  } else {
+                    dy--; 
+                  }
+                }
+              } while ( dy != 0);
+              if (dx !== 0) {
+                if (dx < 0) {
+                  dx++;
+                } else {
+                  dx--; 
+                }
+              }
+            } while (dx != 0);
 
             previous = p.slice();
           }
@@ -253,10 +265,22 @@
                     });
                   }
                 }
-                dy === 0 ? 0 : dy < 0 ? dy++ : dy--;
-              } while ( dy != 0)
-              dx === 0 ? 0 : dx < 0 ? dx++ : dx--;
-            } while (dx != 0)
+                if (dy !== 0) {
+                  if (dy < 0) {
+                    dy++;
+                  } else {
+                    dy--; 
+                  }
+                }
+              } while ( dy != 0);
+              if (dx !== 0) {
+                if (dx < 0) {
+                  dx++;
+                } else {
+                  dx--; 
+                }
+              }
+            } while (dx != 0);
 
             previous = p.slice();
           }
