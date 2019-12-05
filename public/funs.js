@@ -338,8 +338,12 @@
       }
     },
     day5: {
-      part1: data => {},
-      part2: data => {}
+      part1: data => {
+        
+      },
+      part2: data => {
+        
+      }
     },
     day6: {
       part1: data => {},

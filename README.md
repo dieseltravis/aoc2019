@@ -11,6 +11,7 @@ solutions:
 2. [day two](https://ubiquitous-swoop.glitch.me/day02)
 3. [day three](https://ubiquitous-swoop.glitch.me/day03)
 4. [day four](https://ubiquitous-swoop.glitch.me/day04)
+5. [day five](https://ubiquitous-swoop.glitch.me/day05)
 
 2018
 ----
