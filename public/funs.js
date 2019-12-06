@@ -461,7 +461,7 @@
           }
         }
         
-        console.log(orbits);
+        //console.log(orbits);
         
         let total = 0;
         for (const key in orbits) {
@@ -470,7 +470,54 @@
         return total;
       },
       part2: data => {
+        let input = data
+          .trim()
+          .split("\n")
+          .map((row) => row.split(")"));
+        let orbits = {
+          "COM": { // center of mass
+            orbits: []
+          }
+        };
+        const getParents = function (key) {
+          if (key === "COM") return [];
+          
+          let planet = orbits[key];
+          let orbiting = planet.orbits.slice();
+          planet.ancestors = orbiting.slice();
+          
+          for (let i = 0, l = orbiting.length; i < l; i++) {
+            planet.ancestors.push(...getParents(orbiting[i]));
+          }
+          
+          return planet.ancestors;
+        };
         
+        for (let i = 0, l = input.length; i < l; i++) {
+          let orbit = input[i];
+          if (orbits[orbit[1]]) {
+            orbits[orbit[1]].orbits.push(orbit[0]);
+          } else {
+            orbits[orbit[1]] = {
+              orbits: [ orbit[0] ]
+            };
+          }
+        }
+        
+        let youParents = getParents("YOU");
+        let sanParents = getParents("SAN");
+        //console.log(youParents, sanParents);
+        
+        let hops = 0;
+        for (let i = 0, l = youParents.length; i < l; i++) {
+          const foundAt = sanParents.indexOf(youParents[i]);
+          if (foundAt > -1) {
+            // a common ancestor was found
+            hops = i + foundAt;
+            break;
+          }
+        }
+        return hops;
       }
     },
     day7: {
