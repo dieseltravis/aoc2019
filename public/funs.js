@@ -363,15 +363,115 @@
     },
     day5: {
       part1: data => {
-        
+        const input = 1;
+        let output = null;
+        const inputData = data
+          .trim()
+          .split(",")
+          .map(Number);
+        const dataLength = inputData.length;
+
+        for (let i = 0; i < dataLength; i++) {
+          if (inputData[i] === 99) break;
+
+          let op = inputData[i]; // 1 add, 2 multiply, 3 input, 4 output
+          
+          let modes = [];
+          if (op > 4) {
+            let opstr = String(op);
+            op = parseInt(opstr.slice(-2), 10);
+            if (op === 99) break;
+            modes = opstr.slice(0, opstr.length - 2).split().map(Number);
+          }
+          i++;
+          let posA = inputData[i];
+          // if the mode is 1 (true), use immediate value
+          // if the mode is 0 or undefined (false), use value at position
+          let numA = modes.pop() ? posA : inputData[posA];
+
+          if (op === 1 || op === 2) {
+            i++;
+            let posB = inputData[i];
+            let numB = modes.pop() ? posB : inputData[posB];
+            i++;
+            let posResult = inputData[i];
+
+            let result = null;
+
+            if (op === 1) {
+              result = numA + numB;
+            } else if (op === 2) {
+              result = numA * numB;
+            }
+            inputData[posResult] = result;
+          }
+
+          if (op === 3) {
+            // input
+            inputData[posA] = input;
+          } else if (op === 4) {
+            // output
+            output = numA;
+          }
+        }
+
+        return output;
       },
       part2: data => {
         
       }
     },
     day6: {
-      part1: data => {},
-      part2: data => {}
+      part1: data => {
+        let input = data
+          .trim()
+          .split("\n")
+          .map((row) => row.split(")"));
+        let orbits = {
+          "COM": { // center of mass
+            orbits: []
+          }
+        };
+        const getOrbits = function (key) {
+          if (key === "COM") return 0;
+          
+          // loop through sub-orbits and sum
+          let planet = orbits[key];
+          let orbiting = planet.orbits.slice();
+          let sum = orbiting.length;
+          planet.direct = sum;
+          
+          for (let i = 0, l = orbiting.length; i < l; i++) {
+            sum += getOrbits(orbiting[i]);
+          }
+          planet.all = sum;
+          planet.indirect = planet.all - planet.direct;
+          
+          return sum;
+        };
+        
+        for (let i = 0, l = input.length; i < l; i++) {
+          let orbit = input[i];
+          if (orbits[orbit[1]]) {
+            orbits[orbit[1]].orbits.push(orbit[0]);
+          } else {
+            orbits[orbit[1]] = {
+              orbits: [ orbit[0] ]
+            };
+          }
+        }
+        
+        console.log(orbits);
+        
+        let total = 0;
+        for (const key in orbits) {
+          total += getOrbits(key);
+        }
+        return total;
+      },
+      part2: data => {
+        
+      }
     },
     day7: {
       part1: data => {},
