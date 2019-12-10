@@ -548,8 +548,56 @@
       }
     },
     day8: {
-      part1: data => {},
-      part2: data => {}
+      part1: data => {
+        const width = 25;
+        const height = 6;
+        const input = data
+          .trim()
+          .split("")
+          .map(Number);
+        const length = input.length;
+        //let image = [/* { data: [], d0: 0, d1: 0, d2: 0 } */];
+        let index = 0;
+        let min = Infinity;
+        let lowest = null;
+        
+        while (index < length) {
+          let layer = {
+            data: [], 
+            d0: 0, 
+            d1: 0, 
+            d2: 0
+          };
+          for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+              let val = input[index];
+              layer.data.push(val);
+              if (val === 0) {
+                layer.d0++;
+              } else if (val === 1) {
+                layer.d1++;
+              } else if (val === 2) {
+                layer.d2++;
+              }
+              index++;
+            }
+          }
+          
+          if (layer.d0 <= min) {
+            min = layer.d0;
+            lowest = layer;
+          }
+          //image.push(layer);
+        }
+        
+        console.log(lowest);
+        
+        //return Math.pow(2, lowest.d2);
+        return lowest.d1 * lowest.d2;
+      },
+      part2: data => {
+        
+      }
     },
     day9: {
       part1: data => {},
