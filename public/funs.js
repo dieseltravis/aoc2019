@@ -634,12 +634,20 @@
       }
     },
     day9: {
-      part1: data => {},
-      part2: data => {}
+      part1: data => {
+        // depends on day 5
+      },
+      part2: data => {
+        
+      }
     },
     day10: {
-      part1: data => {},
-      part2: data => {}
+      part1: data => {
+        
+      },
+      part2: data => {
+        
+      }
     },
     day11: {
       part1: data => {},
