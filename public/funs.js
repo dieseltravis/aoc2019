@@ -556,14 +556,12 @@
           .split("")
           .map(Number);
         const length = input.length;
-        //let image = [/* { data: [], d0: 0, d1: 0, d2: 0 } */];
         let index = 0;
         let min = Infinity;
         let lowest = null;
         
         while (index < length) {
           let layer = {
-            data: [], 
             d0: 0, 
             d1: 0, 
             d2: 0
@@ -571,7 +569,6 @@
           for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
               let val = input[index];
-              layer.data.push(val);
               if (val === 0) {
                 layer.d0++;
               } else if (val === 1) {
@@ -587,16 +584,53 @@
             min = layer.d0;
             lowest = layer;
           }
-          //image.push(layer);
         }
-        
-        console.log(lowest);
-        
-        //return Math.pow(2, lowest.d2);
+
         return lowest.d1 * lowest.d2;
       },
       part2: data => {
+        const width = 25;
+        const height = 6;
+        const input = data
+          .trim()
+          .split("")
+          .map(Number);
+        const length = input.length;
+        let index = 0;
+        let min = Infinity;
+        let image = [];
         
+        // backwards
+        while (index < length) {
+          for (let y = 0; y < height; y++) {
+            if (image[y] == null) {
+              image[y] = new Array(width).fill(2);
+            }
+            for (let x = 0; x < width; x++) {
+              let val = input[index];
+              let compare = image[y][x];
+              if (compare === 2) {
+                // transparent
+                image[y][x] = val;
+              } else if (compare === 1) {
+                // white
+              } else if (compare === 0) {
+                // black
+              }
+              index++;
+            }
+          }
+        }
+
+        console.log("image: \n" + 
+          image.map((yy) => yy.join(""))
+          .join("\n")
+          .replace(/2/g, "_")
+          .replace(/1/g, "▓")
+          .replace(/0/g, "░")
+        );
+        
+        return "look in the console"
       }
     },
     day9: {
