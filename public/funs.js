@@ -361,7 +361,7 @@
         return count;
       }
     },
-    day5: {
+    day5: {  // broken
       part1: data => {
         const input = 1;
         let output = null;
@@ -520,13 +520,118 @@
         return hops;
       }
     },
-    day7: {
-      part1: data => {},
-      part2: data => {}
+    day7: {  // broken
+      part1: data => {
+        const input = 0;
+        let output = null;
+        const inputData = data
+          .trim()
+          .split(",")
+          .map(Number);
+        const dataLength = inputData.length;
+        
+        // there's gotta be a better way...
+        let amps = new Set();
+        for (let a = 5;a--;) for (let b = 5;b--;) for (let c = 5;c--;) for (let d = 5;d--;) for (let e = 5;e--;) { 
+          let set = new Set().add(a).add(b).add(c).add(d).add(e); 
+          if (set.size === 5) { 
+            amps.add(Array.from(set));
+          }
+        }
+
+        for (let i = 0; i < dataLength; i++) {
+          //TODO:
+        }
+      },
+      part2: data => {
+        //TODO:
+      }
     },
     day8: {
-      part1: data => {},
-      part2: data => {}
+      part1: data => {
+        const width = 25;
+        const height = 6;
+        const input = data
+          .trim()
+          .split("")
+          .map(Number);
+        const length = input.length;
+        let index = 0;
+        let min = Infinity;
+        let lowest = null;
+        
+        while (index < length) {
+          let layer = {
+            d0: 0, 
+            d1: 0, 
+            d2: 0
+          };
+          for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+              let val = input[index];
+              if (val === 0) {
+                layer.d0++;
+              } else if (val === 1) {
+                layer.d1++;
+              } else if (val === 2) {
+                layer.d2++;
+              }
+              index++;
+            }
+          }
+          
+          if (layer.d0 <= min) {
+            min = layer.d0;
+            lowest = layer;
+          }
+        }
+
+        return lowest.d1 * lowest.d2;
+      },
+      part2: data => {
+        const width = 25;
+        const height = 6;
+        const input = data
+          .trim()
+          .split("")
+          .map(Number);
+        const length = input.length;
+        let index = 0;
+        let min = Infinity;
+        let image = [];
+        
+        // backwards
+        while (index < length) {
+          for (let y = 0; y < height; y++) {
+            if (image[y] == null) {
+              image[y] = new Array(width).fill(2);
+            }
+            for (let x = 0; x < width; x++) {
+              let val = input[index];
+              let compare = image[y][x];
+              if (compare === 2) {
+                // transparent
+                image[y][x] = val;
+              } else if (compare === 1) {
+                // white
+              } else if (compare === 0) {
+                // black
+              }
+              index++;
+            }
+          }
+        }
+
+        console.log("image: \n" + 
+          image.map((yy) => yy.join(""))
+          .join("\n")
+          .replace(/2/g, "_")
+          .replace(/1/g, "▓")
+          .replace(/0/g, "░")
+        );
+        
+        return "look in the console"
+      }
     },
     day9: {
       part1: data => {},
