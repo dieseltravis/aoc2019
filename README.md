@@ -13,6 +13,8 @@ solutions:
 4. [day four](https://ubiquitous-swoop.glitch.me/day04)
 5. [day five](https://ubiquitous-swoop.glitch.me/day05) (broken)
 6. [day six](https://ubiquitous-swoop.glitch.me/day06)
+7. [day seven](https://ubiquitous-swoop.glitch.me/day07) (broken: depends on day 5)
+6. [day eight](https://ubiquitous-swoop.glitch.me/day08) WIP...
 
 2018
 ----

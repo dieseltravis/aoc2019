@@ -361,7 +361,7 @@
         return count;
       }
     },
-    day5: {
+    day5: {  // broken
       part1: data => {
         const input = 1;
         let output = null;
@@ -520,9 +520,32 @@
         return hops;
       }
     },
-    day7: {
-      part1: data => {},
-      part2: data => {}
+    day7: {  // broken
+      part1: data => {
+        const input = 0;
+        let output = null;
+        const inputData = data
+          .trim()
+          .split(",")
+          .map(Number);
+        const dataLength = inputData.length;
+        
+        // there's gotta be a better way...
+        let amps = new Set();
+        for (let a = 5;a--;) for (let b = 5;b--;) for (let c = 5;c--;) for (let d = 5;d--;) for (let e = 5;e--;) { 
+          let set = new Set().add(a).add(b).add(c).add(d).add(e); 
+          if (set.size === 5) { 
+            amps.add(Array.from(set));
+          }
+        }
+
+        for (let i = 0; i < dataLength; i++) {
+          //TODO:
+        }
+      },
+      part2: data => {
+        //TODO:
+      }
     },
     day8: {
       part1: data => {},
