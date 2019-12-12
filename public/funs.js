@@ -721,16 +721,24 @@
         return maxAsters;
       },
       part2: data => {
+        // todo : shoot asteroids clockwise, keep track of last one, return (x * 100) + y
+      }
+    },
+    day11: { // broken
+      part1: data => {
+        // depends on day 5
+      },
+      part2: data => {
         
       }
     },
-    day11: {
-      part1: data => {},
-      part2: data => {}
-    },
     day12: {
-      part1: data => {},
-      part2: data => {}
+      part1: data => {
+        
+      },
+      part2: data => {
+        
+      }
     },
     day13: {
       part1: data => {},
