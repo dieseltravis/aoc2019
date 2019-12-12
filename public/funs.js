@@ -740,14 +740,16 @@
           return source === compare ? 0 : source < compare ? 1 : source > compare ? -1 : null;
         };
         const step = function (moons) {
+          // make copy of pos props to work with before changing them
+          const others = moons.map((other) => [other.pos.x, other.pos.y, other.pos.z]);
           moons.forEach((moon, i) => {
             // get velocity
-            moons.filter((other, ii) => ii !== i)
-              .map((other) => other.pos)
-              .forEach((other) => {
-                moon.vel.x += dv(moon.pos.x, other.x);
-                moon.vel.y += dv(moon.pos.y, other.y);
-                moon.vel.z += dv(moon.pos.z, other.z);
+            others.filter((other, ii) => ii !== i)
+              .forEach((other, ii) => {
+                //console.log(i, ii, "dx", moon.vel.x, moon.pos.x, other.x, dv(moon.pos.x, other.x), moon.vel.x + dv(moon.pos.x, other.x));
+                moon.vel.x += dv(moon.pos.x, other[0]);
+                moon.vel.y += dv(moon.pos.y, other[1]);
+                moon.vel.z += dv(moon.pos.z, other[2]);
               });
             
             // set position
@@ -774,16 +776,19 @@
           return Math.abs(coords.x) + Math.abs(coords.y) + Math.abs(coords.z);  
         };
         const steps = 1000;
-        
-        console.log(input);
-        
+                
         for (let i = steps; i--;) {
+          //console.log(JSON.parse(JSON.stringify(input)));
           step(input);
         }
         
         // 13798740989 is too high
         return input.reduce((e, moon) => {
-          e += energy(moon.pos) * energy(moon.vel);
+          const pot = energy(moon.pos);
+          const kin = energy(moon.vel);
+          const total = pot * kin;
+          //console.log(moon, pot, kin, total);
+          e += total;
           return e;
         }, 0);
       },
