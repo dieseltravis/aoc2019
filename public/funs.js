@@ -665,8 +665,6 @@
         };
         let maxAsters = 0;
         
-        console.log(input);
-        
         // draw lines for each 1 and count the number of ones that it hits
         for (let y = 0; y < maxY; y++) {
           let row = input[y];
@@ -681,7 +679,7 @@
                 for (let xx = 0; xx < maxX; xx++) {
                   // if not current point and a one
                   if (!(yy === y && xx === x) && input[yy][xx]) {
-                    if (yy - 1 === y || xx - 1 === x || yy + 1 === y || xx + 1 === x) {
+                    if (Math.abs(yy - y) === 1 || Math.abs(xx - x) === 1) {
                       // shortcut: immediate adjacent rows/columns won't block
                       los.push({ x: xx, y: yy });
                     } else {
@@ -700,15 +698,12 @@
                         do {
                           tx += fn.x;
                           ty += fn.y;
-                          //console.log(fn, x, y, dx, dy, xx, yy, tx, ty);
                           if (!(tx === x && ty === y) && input[ty][tx]) {
                             // if not origin x,y reached and input = 1
                             ones++;
                             break;
-                          //} else {
-                          //  console.log(tx, ty, input[ty][tx])
                           }
-                        } while (tx !== x && ty !== y && ones === 0);
+                        } while (!(tx === x && ty === y) && ones === 0);
                         if (ones === 0) {
                           // there were no ones between
                           los.push({ x: xx, y: yy });
@@ -718,7 +713,6 @@
                   }
                 }
               }
-              console.log(los.length, x, y, los);
               maxAsters = Math.max(maxAsters, los.length);
             }
           }
