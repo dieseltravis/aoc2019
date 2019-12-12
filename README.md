@@ -14,7 +14,11 @@ solutions:
 5. [day five](https://ubiquitous-swoop.glitch.me/day05) (broken)
 6. [day six](https://ubiquitous-swoop.glitch.me/day06)
 7. [day seven](https://ubiquitous-swoop.glitch.me/day07) (broken: depends on day 5)
-6. [day eight](https://ubiquitous-swoop.glitch.me/day08)
+8. [day eight](https://ubiquitous-swoop.glitch.me/day08)
+9. [day nine](https://ubiquitous-swoop.glitch.me/day09) (broken: depends on day 5 too)
+10. [day ten](https://ubiquitous-swoop.glitch.me/day10) (part 1 ok, part 2 WIP)
+11. [day eleven](https://ubiquitous-swoop.glitch.me/day11) (broken: depends on day 5 also)
+12. [day twelve](https://ubiquitous-swoop.glitch.me/day12) (WIP)
 
 2018
 ----

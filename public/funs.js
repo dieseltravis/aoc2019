@@ -633,21 +633,130 @@
         return "look in the console"
       }
     },
-    day9: {
-      part1: data => {},
-      part2: data => {}
+    day9: {  //  broken
+      part1: data => {
+        // depends on day 5
+      },
+      part2: data => {
+        
+      }
     },
     day10: {
-      part1: data => {},
-      part2: data => {}
+      part1: data => {
+        const input = data
+          .trim()
+          .split("\n")
+          .map((row) => row.split("").map((cell) => cell === "#" ? 1 : 0));
+
+        const maxY = input.length;
+        const gcd = function gcd(a, b){
+          return b ? gcd(b, a % b) : a;
+        };
+        const slope = function (x, y) {
+          const ix = x < 0 ? -1 : 1;
+          const iy = y < 0 ? -1 : 1;
+          x = Math.abs(x);
+          y = Math.abs(y);
+          const divisor = gcd(x, y);
+          return { 
+            x: (ix * x / divisor), 
+            y: (iy * y / divisor)
+          };
+        };
+        let maxAsters = 0;
+        
+        // draw lines for each 1 and count the number of ones that it hits
+        for (let y = 0; y < maxY; y++) {
+          let row = input[y];
+          let maxX = row.length;
+          for (let x = 0; x < maxX; x++) {
+            let cell = row[x];
+            // look around
+            if (cell) {
+              let los = [];
+              // find all other ones, and keep track if tere are no zeroes in between
+              for (let yy = 0; yy < maxY; yy++) {
+                for (let xx = 0; xx < maxX; xx++) {
+                  // if not current point and a one
+                  if (!(yy === y && xx === x) && input[yy][xx]) {
+                    if (Math.abs(yy - y) === 1 || Math.abs(xx - x) === 1) {
+                      // shortcut: immediate adjacent rows/columns won't block
+                      los.push({ x: xx, y: yy });
+                    } else {
+                      // check for any intersecting stars between x,y and xx,yy
+                      let dx = x - xx;
+                      let dy = y - yy;
+                      const fn = slope(dx, dy);
+                      if (fn.x === dx && fn.y === dy) {
+                        // no points between
+                        los.push({ x: xx, y: yy });
+                      } else {
+                        // check points between for ones
+                        let tx = xx;
+                        let ty = yy;
+                        let ones = 0;
+                        do {
+                          tx += fn.x;
+                          ty += fn.y;
+                          if (!(tx === x && ty === y) && input[ty][tx]) {
+                            // if not origin x,y reached and input = 1
+                            ones++;
+                            break;
+                          }
+                        } while (!(tx === x && ty === y) && ones === 0);
+                        if (ones === 0) {
+                          // there were no ones between
+                          los.push({ x: xx, y: yy });
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              maxAsters = Math.max(maxAsters, los.length);
+            }
+          }
+        }
+        
+        return maxAsters;
+      },
+      part2: data => {
+        // todo : shoot asteroids clockwise, keep track of last one, return (x * 100) + y
+      }
     },
-    day11: {
-      part1: data => {},
-      part2: data => {}
+    day11: { // broken
+      part1: data => {
+        // depends on day 5
+      },
+      part2: data => {
+        
+      }
     },
     day12: {
-      part1: data => {},
-      part2: data => {}
+      part1: data => {
+        const parse1 = /\w=-?\d+/g;
+        const parse2 = /(\w)=(-?\d+)/;
+        const input = data
+          .trim()
+          .split("\n")
+          .map((line) => line.match(parse1)
+            .reduce((o, m) => { 
+              const g = m.match(parse2);
+              o[g[1]] = g[2];
+              return o;
+            }, {}));
+        // pos: { x, y, z }
+        // vel: { x, y, z }
+        const energy = function (coords) {
+          return Math.abs(coords.x) + Math.abs(coords.y) + Math.abs(coords.z);  
+        };
+        const steps = 1000;
+        
+        // TODO;
+      },
+      part2: data => {
+        
+      }
     },
     day13: {
       part1: data => {},
@@ -709,3 +818,4 @@
 
   this.funs = funs;
 }.call(this));
+

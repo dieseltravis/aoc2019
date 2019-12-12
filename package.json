@@ -1,6 +1,6 @@
 {
   "name": "ubiquitous-swoop",
-  "version": "2019.12.08",
+  "version": "2019.12.10",
   "description": "Travis's Advent of Code 2019",
   "main": "server.js",
   "scripts": {
