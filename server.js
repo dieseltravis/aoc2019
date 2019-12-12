@@ -13,6 +13,11 @@ app.get("/", function(request, response) {
   response.sendFile(__dirname + "/views/index.html");
 });
 
+app.get("/favicon.ico", function(request, response) {
+  response.redirect("https://cdn.glitch.com/9f083ec1-8740-44e9-95e3-d1fbae530220%2Fadventofcode-pink.ico?v=1576131694059");
+  //response.sendFile(__dirname + "/assets/adventofcode-pink.ico");
+});
+
 app.use(timeout(1200000));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
