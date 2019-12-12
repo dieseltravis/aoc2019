@@ -734,7 +734,25 @@
     },
     day12: {
       part1: data => {
+        const parse1 = /\w=-?\d+/g;
+        const parse2 = /(\w)=(-?\d+)/;
+        const input = data
+          .trim()
+          .split("\n")
+          .map((line) => line.match(parse1)
+            .reduce((o, m) => { 
+              const g = m.match(parse2);
+              o[g[1]] = g[2];
+              return o;
+            }, {}));
+        // pos: { x, y, z }
+        // vel: { x, y, z }
+        const energy = function (coords) {
+          return Math.abs(coords.x) + Math.abs(coords.y) + Math.abs(coords.z);  
+        };
+        const steps = 1000;
         
+        // TODO;
       },
       part2: data => {
         
