@@ -736,23 +736,56 @@
       part1: data => {
         const parse1 = /\w=-?\d+/g;
         const parse2 = /(\w)=(-?\d+)/;
+        const dv = function (source, compare) {
+          return source === compare ? 0 : source < compare ? 1 : source > compare ? -1 : null;
+        };
+        const step = function (moons) {
+          moons.forEach((moon, i) => {
+            // get velocity
+            moons.filter((other, ii) => ii !== i)
+              .map((other) => other.pos)
+              .forEach((other) => {
+                moon.vel.x += dv(moon.pos.x, other.x);
+                moon.vel.y += dv(moon.pos.y, other.y);
+                moon.vel.z += dv(moon.pos.z, other.z);
+              });
+            
+            // set position
+            moon.pos.x += moon.vel.x;
+            moon.pos.y += moon.vel.y;
+            moon.pos.z += moon.vel.z;
+          });
+        };
         const input = data
           .trim()
           .split("\n")
-          .map((line) => line.match(parse1)
-            .reduce((o, m) => { 
-              const g = m.match(parse2);
-              o[g[1]] = g[2];
-              return o;
-            }, {}));
-        // pos: { x, y, z }
-        // vel: { x, y, z }
+          .map((line) => {
+            return {
+              pos: line.match(parse1)
+                .reduce((o, m) => { 
+                  const g = m.match(parse2);
+                  o[g[1]] = parseInt(g[2], 10);
+                  return o;
+                }, {}),
+              vel: { x: 0, y: 0, z: 0 }
+            };
+          });
         const energy = function (coords) {
           return Math.abs(coords.x) + Math.abs(coords.y) + Math.abs(coords.z);  
         };
         const steps = 1000;
         
-        // TODO;
+        console.log(input);
+        
+        for (let i = steps; i--;) {
+          step(input);
+        }
+        
+        // 13798740989 is too high
+        return input.reduce((e, moon) => {
+          e += energy(moon.pos) * energy(moon.vel);
+          return e;
+        }, 0);
       },
       part2: data => {
         
