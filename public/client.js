@@ -8,6 +8,7 @@ const process = function(funs, day, part) {
   const onevent = function(ev) {
     // put function in a timeout so that it doesn't block UI thread
     setTimeout(function() {
+      console.info("starting...", new Date());
       console.time(timer);
 
       // fun time
