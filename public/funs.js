@@ -792,7 +792,7 @@
           return e;
         }, 0);
       },
-      part2: data => {
+      part2: data => {  // this is taking a long time to complete, probably an easier way
         const parse1 = /\w=-?\d+/g;
         const parse2 = /(\w)=(-?\d+)/;
         const input = data
@@ -814,7 +814,7 @@
         };
         
         let steps = 0;
-        let safety = 10000000000; // infinite loop protection
+        let safety = 1000000000000; // infinite loop protection
         let repeatsAt = [ 0,0,0,0
           /*
           0,0,//0,0,0,0, //0
@@ -853,7 +853,7 @@
               
               // only check when position matches
               if (moon.vel.x === 0 && moon.vel.y === 0 && moon.vel.z === 0) {
-                console.log(i, "vel repeats at", steps);
+                console.log(i, "vel repeats at", steps, repeatsAt);
                 repeatsAt[i] = steps;
               }
             }
@@ -890,13 +890,19 @@
         // 656379785880 is too low
       }
     },
-    day13: {
-      part1: data => {},
+    day13: {  // broken
+      part1: data => {
+        // depends on day 5
+      },
       part2: data => {}
     },
     day14: {
-      part1: data => {},
-      part2: data => {}
+      part1: data => {
+        
+      },
+      part2: data => {
+        
+      }
     },
     day15: {
       part1: data => {},

@@ -1,6 +1,6 @@
 {
   "name": "ubiquitous-swoop",
-  "version": "2019.12.12",
+  "version": "2019.12.14",
   "description": "Travis's Advent of Code 2019",
   "main": "server.js",
   "scripts": {
@@ -16,10 +16,13 @@
   "repository": {
     "url": "https://glitch.com/edit/#!/ubiquitous-swoop"
   },
-  "license": "MIT",
+  "license": "Hippocratic",
   "keywords": [
+    "glitch",
     "adventofcode",
     "aoc",
-    "2019"
+    "2019",
+    "advent-of-code",
+    "advent-of-code-2019 "
   ]
 }
