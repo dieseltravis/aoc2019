@@ -736,35 +736,173 @@
       part1: data => {
         const parse1 = /\w=-?\d+/g;
         const parse2 = /(\w)=(-?\d+)/;
+        const dv = function (source, compare) {
+          return source === compare ? 0 : source < compare ? 1 : source > compare ? -1 : null;
+        };
+        const step = function (moons) {
+          // make copy of pos props to work with before changing them
+          const others = moons.map((other) => [other.pos.x, other.pos.y, other.pos.z]);
+          moons.forEach((moon, i) => {
+            // get velocity
+            others.filter((other, ii) => ii !== i)
+              .forEach((other, ii) => {
+                //console.log(i, ii, "dx", moon.vel.x, moon.pos.x, other.x, dv(moon.pos.x, other.x), moon.vel.x + dv(moon.pos.x, other.x));
+                moon.vel.x += dv(moon.pos.x, other[0]);
+                moon.vel.y += dv(moon.pos.y, other[1]);
+                moon.vel.z += dv(moon.pos.z, other[2]);
+              });
+            
+            // set position
+            moon.pos.x += moon.vel.x;
+            moon.pos.y += moon.vel.y;
+            moon.pos.z += moon.vel.z;
+          });
+        };
         const input = data
           .trim()
           .split("\n")
-          .map((line) => line.match(parse1)
-            .reduce((o, m) => { 
-              const g = m.match(parse2);
-              o[g[1]] = g[2];
-              return o;
-            }, {}));
-        // pos: { x, y, z }
-        // vel: { x, y, z }
+          .map((line) => {
+            return {
+              pos: line.match(parse1)
+                .reduce((o, m) => { 
+                  const g = m.match(parse2);
+                  o[g[1]] = parseInt(g[2], 10);
+                  return o;
+                }, {}),
+              vel: { x: 0, y: 0, z: 0 }
+            };
+          });
         const energy = function (coords) {
           return Math.abs(coords.x) + Math.abs(coords.y) + Math.abs(coords.z);  
         };
         const steps = 1000;
+                
+        for (let i = steps; i--;) {
+          //console.log(JSON.parse(JSON.stringify(input)));
+          step(input);
+        }
         
-        // TODO;
+        // 13798740989 is too high
+        return input.reduce((e, moon) => {
+          const pot = energy(moon.pos);
+          const kin = energy(moon.vel);
+          const total = pot * kin;
+          //console.log(moon, pot, kin, total);
+          e += total;
+          return e;
+        }, 0);
+      },
+      part2: data => {  // this is taking a long time to complete, probably an easier way
+        const parse1 = /\w=-?\d+/g;
+        const parse2 = /(\w)=(-?\d+)/;
+        const input = data
+          .trim()
+          .split("\n")
+          .map((line) => {
+            return {
+              pos: line.match(parse1)
+                .reduce((o, m) => { 
+                  const g = m.match(parse2);
+                  o[g[1]] = parseInt(g[2], 10);
+                  return o;
+                }, {}),
+              vel: { x: 0, y: 0, z: 0 }
+            };
+          });
+        const dv = function (source, compare) {
+          return source === compare ? 0 : source < compare ? 1 : source > compare ? -1 : null;
+        };
+        
+        let steps = 0;
+        let safety = 1000000000000; // infinite loop protection
+        let repeatsAt = [ 0,0,0,0
+          /*
+          0,0,//0,0,0,0, //0
+          0,0,//0,0,0,0, //1
+          0,0,//0,0,0,0, //2
+          0,0//,0,0,0,0  //3
+          */
+        ];
+        
+        const start = JSON.parse(JSON.stringify(input));
+        console.log("start", start);
+
+        const step = function () {
+          // make copy of pos props to work with before changing them
+          const others = input.map((other) => [other.pos.x, other.pos.y, other.pos.z]);
+          
+          steps++;
+          input.forEach((moon, i) => {           
+            // get velocity
+            others.filter((other, ii) => ii !== i)
+              .forEach((other, ii) => {
+                //console.log(i, ii, "dx", moon.vel.x, moon.pos.x, other.x, dv(moon.pos.x, other.x), moon.vel.x + dv(moon.pos.x, other.x));
+                moon.vel.x += dv(moon.pos.x, other[0]);
+                moon.vel.y += dv(moon.pos.y, other[1]);
+                moon.vel.z += dv(moon.pos.z, other[2]);
+              });
+            
+            // set position
+            moon.pos.x += moon.vel.x;
+            moon.pos.y += moon.vel.y;
+            moon.pos.z += moon.vel.z;            
+
+            // check for repeating value of each property
+            if (repeatsAt[i] === 0 && start[i].pos.x === moon.pos.x && start[i].pos.y === moon.pos.y && start[i].pos.z === moon.pos.z) {
+              console.log(i, "pos repeats at", steps);
+              
+              // only check when position matches
+              if (moon.vel.x === 0 && moon.vel.y === 0 && moon.vel.z === 0) {
+                console.log(i, "vel repeats at", steps, repeatsAt);
+                repeatsAt[i] = steps;
+              }
+            }
+          });
+            
+          //if (steps === 2771 || steps === 2772 || steps === 2773) {
+          //  console.log(steps, JSON.parse(JSON.stringify(input)), JSON.parse(JSON.stringify(repeatsAt)))
+          //}        
+        };
+        
+        while (repeatsAt.some((item) => item === 0) && safety--) {
+          step();
+        } 
+        console.log("safety", safety);
+        console.log(steps, input, repeatsAt);
+        
+        // get lowest common multiple of numbers
+        const gcd = function (a, b) {
+          return !b ? a : gcd(b, a % b);
+        };
+
+        const lcm = function (a, b) {
+          return (a * b) / gcd(a, b);   
+        };
+
+        let multiple = Math.max(...repeatsAt);
+        repeatsAt.forEach((n) => {
+          multiple = lcm(multiple, n);
+        });
+
+        return multiple;
+        // 3244 is too low
+        // 110705026 is too low
+        // 656379785880 is too low
+      }
+    },
+    day13: {  // broken
+      part1: data => {
+        // depends on day 5
+      },
+      part2: data => {}
+    },
+    day14: {
+      part1: data => {
+        
       },
       part2: data => {
         
       }
-    },
-    day13: {
-      part1: data => {},
-      part2: data => {}
-    },
-    day14: {
-      part1: data => {},
-      part2: data => {}
     },
     day15: {
       part1: data => {},
