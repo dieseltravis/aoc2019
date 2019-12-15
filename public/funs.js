@@ -897,15 +897,34 @@
       part2: data => {}
     },
     day14: {
-      part1: data => {
+      part1: data => {  // WIP: build a tree that goes from ORE to FUEL
+        const input = data
+          .trim()
+          .split("\n")
+          .map((line) => line.split("=>")
+               .map((item) => item.split(",")
+                    .map((ing) => {
+                            const arr = ing.trim().split(" ");
+                            return {
+                              amount: parseInt(arr[0], 10),
+                              name: arr[1] 
+                            };
+
+                          }
+                        )
+                   )
+              );
         
+        // TODO: loop through input arrays to figure out function
       },
       part2: data => {
         
       }
     },
-    day15: {
-      part1: data => {},
+    day15: { // broken
+      part1: data => {
+        // depends on day 5
+      },
       part2: data => {}
     },
     day16: {

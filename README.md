@@ -21,6 +21,7 @@ solutions:
 12. [day twelve](https://ubiquitous-swoop.glitch.me/day12) (part 1 ok, part 2 WIP)
 13. [day thirteen](https://ubiquitous-swoop.glitch.me/day13) (broken: depends on day 5 💀)
 14. [day fourteen](https://ubiquitous-swoop.glitch.me/day14) (WIP)
+15. [day fifteen](https://ubiquitous-swoop.glitch.me/day15) (broken: depends on day 5 💀💀)
 
 2018
 ----
