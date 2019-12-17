@@ -378,33 +378,18 @@
           
           let modes = [];
           if (op > 4) {
-            let opstr = String(op);
+            let opstr = "0" + String(op);
             op = parseInt(opstr.slice(-2), 10);
             if (op === 99) break;
-            modes = opstr.slice(0, opstr.length - 2).split().map(Number);
+            modes = opstr.slice(0, opstr.length - 2).split("").map(Number);
           }
+          console.log("modes: ", modes);
+          
           i++;
           let posA = inputData[i];
           // if the mode is 1 (true), use immediate value
           // if the mode is 0 or undefined (false), use value at position
           let numA = modes.pop() ? posA : inputData[posA];
-
-          if (op === 1 || op === 2) {
-            i++;
-            let posB = inputData[i];
-            let numB = modes.pop() ? posB : inputData[posB];
-            i++;
-            let posResult = inputData[i];
-
-            let result = null;
-
-            if (op === 1) {
-              result = numA + numB;
-            } else if (op === 2) {
-              result = numA * numB;
-            }
-            inputData[posResult] = result;
-          }
 
           if (op === 3) {
             // input
@@ -413,7 +398,29 @@
             // output
             output = numA;
           }
+          let result = numA;
+          
+          for (let l = modes.length; l--;) {
+
+            if (op === 1 || op === 2) {
+              i++;
+              let posB = inputData[i];
+              let numB = modes.pop() ? posB : inputData[posB];
+              i++;
+              let posResult = inputData[i];
+
+
+              if (op === 1) {
+                result = result + numB;
+              } else if (op === 2) {
+                result = result * numB;
+              }
+              inputData[posResult] = result;
+            }
+
+          }
         }
+        console.log(inputData);
 
         return output;
       },
@@ -898,24 +905,161 @@
     },
     day14: {
       part1: data => {  // WIP: build a tree that goes from ORE to FUEL
+        /*
         const input = data
           .trim()
           .split("\n")
-          .map((line) => line.split("=>")
-               .map((item) => item.split(",")
-                    .map((ing) => {
-                            const arr = ing.trim().split(" ");
-                            return {
-                              amount: parseInt(arr[0], 10),
-                              name: arr[1] 
-                            };
-
-                          }
-                        )
-                   )
-              );
+          .map((line) => { 
+            let row = line.split("=>")
+              .map((item) => item.split(",")
+                .map((ing) => {
+                      const arr = ing.trim().split(" ");
+                      return {
+                        amount: parseInt(arr[0], 10),
+                        name: arr[1] 
+                      };
+                    })
+                 );
+            return {
+              left: row[0],
+              right: row[1][0]
+            };
+        });
+        console.log(input);
+        */
         
-        // TODO: loop through input arrays to figure out function
+        const input2 = data
+          .trim()
+          .split("\n")
+          .reduce((hash, line) => { 
+            let row = line.split("=>")
+              .map((item) => item.split(",")
+                .map((ing) => {
+                      const arr = ing.trim().split(" ");
+                      return {
+                        amount: parseInt(arr[0], 10),
+                        name: arr[1] 
+                      };
+                    })
+                 );
+            hash[row[1][0].name] = {
+              produces: row[1][0].amount,
+              ingredients: row[0]
+            };
+            return hash;
+        }, {});
+        console.log(input2);
+        
+        /*
+        const process = function (amount, find) {
+          if (find === "ORE") {
+            return amount;
+          } else {
+            console.log("process:", amount, find);
+            return amount * input.filter((line) => line.right.name === find)
+              .reduce((r1, line) => {
+                console.log("reduce 1:", line.left);
+                r1 + line.left.reduce((r2, item) => {
+                  console.log("reduce 2:", item);
+                  r2 += process(item.amount, item.name);
+                  return r2;
+                }, 0); 
+                return r1; 
+              }, 0);
+          }
+        };
+        
+        let oreCount = process(1, "FUEL");
+        console.log("ore count:", oreCount);
+        */
+        /*
+        let totals = {};
+        const process2 = function (need, find) {
+          console.log("process 2:", need, find), input2[find];
+          const times = need / input2[find].produces;
+          return times * input2[find].ingredients.reduce((total, ing) => {
+            console.log("p2r", ing);
+            if (ing.name === "ORE") {
+              total += ing.amount;
+            } else {
+              total += process2(ing.amount, ing.name);
+              if (!totals[ing.name]) {
+                totals[ing.name] = need * ing.amount;
+              } else {
+                totals[ing.name] += need * ing.amount;
+              }
+            }
+            return total;
+          }, 0);
+        };
+        let oreCount2 = process2(1, "FUEL");
+        console.log("ore count 2:", oreCount2);
+        console.log(totals);
+        
+        return oreCount2;
+        */
+        const getNeeded = function (name) {
+          let needed = input2[name].ingredients.reduce((acc, item) => {
+            if (!acc[item.name]) {
+              acc[item.name] = item.amount;
+            } else {
+              acc[item.name] += item.amount;
+            }
+            return acc;
+          }, {});
+          console.log("needed", needed);
+          return needed;
+        };
+        
+        const countNeeded = function (name, amount) {
+          let needed = getNeeded(name);
+          for (let ing in needed) {
+            needed[ing] = needed[ing] * amount;
+
+            let find2 = { name: ing, amount: needed[ing]};
+            let need2 = getNeeded(find2.name);
+            console.log("ing", find2, need2);
+          }
+          
+          return needed;
+        };
+        
+        const asdf = function (name, r) {
+          let found = input2[name];
+          let amount = found.produces;
+          let replacements = found.ingredients.reduce((acc, item) => {
+            let i = acc.findIndex((a) => a.name === item.name);
+            if (i >= 0) {
+              acc[i].amount += item.amount;
+            } else {
+              acc.push({
+                amount: item.amount,
+                name: item.name
+              });
+            }
+            return acc;
+          }, r);
+          
+          console.log(replacements);
+          return replacements;
+        };
+        
+        let r = [];
+        let x = asdf("FUEL", r);
+        console.log(r);
+        let r2 = [];
+        x.forEach((ing) => {
+          let y = asdf(ing.name, r2);
+        });
+        // amount / produces
+        console.log(r2);
+        
+        //let find = { name: "FUEL", amount: 1 };
+        //console.log(getNeeded("FUEL", 1));
+        //console.log(needed);
+        
+        
+        
       },
       part2: data => {
         
